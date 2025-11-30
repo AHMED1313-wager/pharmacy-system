@@ -14,6 +14,9 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const SalesManagement = () => {
   const [sales, setSales] = useState([]);
   const [filter, setFilter] = useState('daily');
@@ -26,7 +29,7 @@ const SalesManagement = () => {
 
   const fetchSales = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/sales');
+      const response = await axios.get(`${API_URL}/api/sales`);
       setSales(response.data);
       calculateStats(response.data);
     } catch (error) {
