@@ -13,6 +13,9 @@ import {
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const SellerCategories = () => {
   const { user } = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
@@ -32,7 +35,7 @@ const SellerCategories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/medicineCategories');
+      const response = await axios.get(`${API_URL}/api/medicineCategories`);
       setCategories(response.data);
     } catch (error) {
       console.error('خطأ في جلب الأصناف:', error);
@@ -42,7 +45,7 @@ const SellerCategories = () => {
   const fetchMedicines = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/medicines');
+      const response = await axios.get(`${API_URL}/api/medicines`);
       const availableMedicines = response.data.filter(med => med.quantity > 0);
       setMedicines(availableMedicines);
     } catch (error) {
@@ -107,14 +110,14 @@ const SellerCategories = () => {
         pharmacyName: 'صيدلية النور'
       };
 
-      const response = await axios.post('http://localhost:5000/api/sales', invoiceData);
+      const response = await axios.post(`${API_URL}/api/sales`, invoiceData);
 
       // ✅ تصحيح: تحديث المخزون بشكل صحيح - طرح الكمية المباعة فقط
       for (const item of cart) {
         const medicine = medicines.find(m => m._id === item._id);
         if (medicine) {
           const newQuantity = medicine.quantity - item.quantity;
-          await axios.put(`http://localhost:5000/api/medicines/${item._id}`, {
+          await axios.put(`${API_URL}/api/medicines/${item._id}`, {
             quantity: newQuantity
           });
         }
