@@ -22,7 +22,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Tooltip
+  Tooltip,
+  Grid
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -35,6 +36,9 @@ import {
   TrendingDown as TrendingDownIcon
 } from '@mui/icons-material';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Stock = () => {
   const [stockItems, setStockItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -45,14 +49,15 @@ const Stock = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [returns, setReturns] = useState([]);
   const [damaged, setDamaged] = useState([]);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   const fetchStockItems = async () => {
     try {
       setLoading(true);
       const [stockRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/stock'),
-        axios.get('http://localhost:5000/api/returns'),
-        axios.get('http://localhost:5000/api/damaged')
+        axios.get(`${API_URL}/api/stock`),
+        axios.get(`${API_URL}/api/returns`),
+        axios.get(`${API_URL}/api/damaged`)
       ]);
 
       setStockItems(stockRes.data);
@@ -67,8 +72,6 @@ const Stock = () => {
       setLoading(false);
     }
   };
-
-  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     fetchStockItems();
@@ -633,8 +636,5 @@ const Stock = () => {
     </Box>
   );
 };
-
-// نضيف Grid component إذا لم يكن مستورد
-import Grid from '@mui/material/Grid';
 
 export default Stock;
