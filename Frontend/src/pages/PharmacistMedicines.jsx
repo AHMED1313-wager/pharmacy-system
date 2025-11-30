@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Button, TextField, Typography, MenuItem, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const categories = [
   'ادوية حساسية',
   'ادوية المعدة والجهاز الهضمي',
@@ -36,17 +39,17 @@ const PharmacistMedicines = () => {
   }, []);
 
   const fetchMedicines = async () => {
-    const { data } = await axios.get('http://localhost:5000/api/medicines');
+    const { data } = await axios.get(`${API_URL}/api/medicines`);
     setMedicines(data);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     if (editingId) {
-      await axios.put(`http://localhost:5000/api/medicines/${editingId}`, form);
+      await axios.put(`${API_URL}/api/medicines/${editingId}`, form);
       setEditingId(null);
     } else {
-      await axios.post('http://localhost:5000/api/medicines', form);
+      await axios.post(`${API_URL}/api/medicines`, form);
     }
     setForm({ name: '', manufacturer: '', category: '', productionDate: '', expiryDate: '', quantity: '', supplierName: '', supplierPhone: '', salePrice: '' });
     fetchMedicines();
@@ -64,7 +67,7 @@ const PharmacistMedicines = () => {
   };
 
   const handleDelete = async id => {
-    await axios.delete(`http://localhost:5000/api/medicines/${id}`);
+    await axios.delete(`${API_URL}/api/medicines/${id}`);
     fetchMedicines();
   };
 
