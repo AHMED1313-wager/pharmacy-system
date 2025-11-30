@@ -28,9 +28,12 @@ const AdminUsersManagement = () => {
   const [form, setForm] = useState({ username: '', password: '', role: 'seller' });
   const [editId, setEditId] = useState(null);
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/users');
+      const { data } = await axios.get(`${API_URL}/api/users`);
       setUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -61,9 +64,9 @@ const AdminUsersManagement = () => {
   const handleSubmit = async () => {
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/users/${editId}`, form);
+        await axios.put(`${API_URL}/api/users/${editId}`, form);
       } else {
-        await axios.post('http://localhost:5000/api/users', form);
+        await axios.post(`${API_URL}/api/users`, form);
       }
       fetchUsers();
       handleClose();
@@ -75,7 +78,7 @@ const AdminUsersManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('هل أنت متأكد من حذف المستخدم؟')) {
       try {
-        await axios.delete(`http://localhost:5000/api/users/${id}`);
+        await axios.delete(`${API_URL}/api/users/${id}`);
         fetchUsers();
       } catch (error) {
         console.error('Error deleting user:', error);
