@@ -70,6 +70,9 @@ const Finance = () => {
     end: new Date().toISOString().split('T')[0]
   });
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const periods = [
     { value: 'daily', label: 'يومي', days: 1 },
     { value: 'weekly', label: 'أسبوعي', days: 7 },
@@ -81,7 +84,7 @@ const Finance = () => {
   const fetchFinanceData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/finance/advanced?period=${period}`);
+      const response = await axios.get(`${API_URL}/api/finance/advanced?period=${period}`);
       setFinanceData(response.data);
     } catch (error) {
       console.error('خطأ في جلب البيانات المالية:', error);
@@ -93,10 +96,10 @@ const Finance = () => {
   const fetchLocalData = async () => {
     try {
       const [salesRes, medicinesRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/sales'),
-        axios.get('http://localhost:5000/api/medicines'),
-        axios.get('http://localhost:5000/api/returns'),
-        axios.get('http://localhost:5000/api/damaged')
+        axios.get(`${API_URL}/api/sales`),
+        axios.get(`${API_URL}/api/medicines`),
+        axios.get(`${API_URL}/api/returns`),
+        axios.get(`${API_URL}/api/damaged`)
       ]);
 
       const salesData = salesRes.data;
