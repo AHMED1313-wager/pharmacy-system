@@ -16,6 +16,9 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const ReturnsAndDamaged = () => {
   const [tabValue, setTabValue] = useState(0);
   const [medicines, setMedicines] = useState([]);
@@ -37,7 +40,7 @@ const ReturnsAndDamaged = () => {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/medicines');
+      const response = await axios.get(`${API_URL}/api/medicines`);
       setMedicines(response.data);
     } catch (error) {
       console.error('Error fetching medicines:', error);
@@ -47,7 +50,7 @@ const ReturnsAndDamaged = () => {
 
   const fetchReturns = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/returns');
+      const response = await axios.get(`${API_URL}/api/returns`);
       setReturns(response.data);
     } catch (error) {
       console.log('No returns data yet');
@@ -57,7 +60,7 @@ const ReturnsAndDamaged = () => {
 
   const fetchDamaged = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/damaged');
+      const response = await axios.get(`${API_URL}/api/damaged`);
       setDamaged(response.data);
     } catch (error) {
       console.log('No damaged data yet');
@@ -79,7 +82,7 @@ const ReturnsAndDamaged = () => {
         reason
       };
 
-      await axios.post('http://localhost:5000/api/returns', returnData);
+      await axios.post(`${API_URL}/api/returns`, returnData);
 
       setMessage({ type: 'success', text: 'تمت إضافة المسترجع وتحديث المخزون بنجاح' });
       setSelectedMedicine('');
@@ -108,7 +111,7 @@ const ReturnsAndDamaged = () => {
         reason
       };
 
-      await axios.post('http://localhost:5000/api/damaged', damagedData);
+      await axios.post(`${API_URL}/api/damaged`, damagedData);
 
       setMessage({ type: 'success', text: 'تمت إضافة التالف وتحديث المخزون بنجاح' });
       setSelectedMedicine('');
