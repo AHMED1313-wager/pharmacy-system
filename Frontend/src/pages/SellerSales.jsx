@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Button, TextField, Typography, MenuItem, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const SellerSales = () => {
   const [medicines, setMedicines] = useState([]);
   const [sales, setSales] = useState([]);
@@ -9,12 +12,12 @@ const SellerSales = () => {
   const [quantity, setQuantity] = useState(1);
 
   const fetchMedicines = async () => {
-    const { data } = await axios.get('http://localhost:5000/api/medicines');
+    const { data } = await axios.get(`${API_URL}/api/medicines`);
     setMedicines(data);
   };
 
   const fetchSales = async () => {
-    const { data } = await axios.get('http://localhost:5000/api/sales');
+    const { data } = await axios.get(`${API_URL}/api/sales`);
     setSales(data);
   };
 
@@ -25,7 +28,7 @@ const SellerSales = () => {
 
   const handleAddSale = async () => {
     if (!selectedMed || quantity <= 0) return;
-    await axios.post('http://localhost:5000/api/sales', { medicineId: selectedMed, quantitySold: quantity, sellerName: 'seller001' /* استبدل باليوزر الحالي */ });
+    await axios.post(`${API_URL}/api/sales`, { medicineId: selectedMed, quantitySold: quantity, sellerName: 'seller001' /* استبدل باليوزر الحالي */ });
     fetchSales();
   };
 
