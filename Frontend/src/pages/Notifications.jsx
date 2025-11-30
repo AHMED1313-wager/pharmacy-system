@@ -59,6 +59,9 @@ const Notifications = () => {
     criticalStockThreshold: 5
   });
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
     fetchData();
     if (autoRefresh) {
@@ -75,8 +78,8 @@ const Notifications = () => {
     try {
       setLoading(true);
       const [notificationsRes, medicinesRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/notifications'),
-        axios.get('http://localhost:5000/api/medicines')
+        axios.get(`${API_URL}/api/notifications`),
+        axios.get(`${API_URL}/api/medicines`)
       ]);
       
       setNotifications(notificationsRes.data);
@@ -156,7 +159,7 @@ const Notifications = () => {
   const handleDelete = async (id) => {
     if (window.confirm('هل تريد حذف هذا التنبيه؟')) {
       try {
-        await axios.delete(`http://localhost:5000/api/notifications/${id}`);
+        await axios.delete(`${API_URL}/api/notifications/${id}`);
         fetchData();
       } catch (error) {
         console.error('خطأ في حذف التنبيه:', error);
@@ -169,7 +172,7 @@ const Notifications = () => {
       try {
         // حذف جميع التنبيهات (هذا مثال - قد تحتاج لتعديله حسب API)
         for (const notif of notifications) {
-          await axios.delete(`http://localhost:5000/api/notifications/${notif._id}`);
+          await axios.delete(`${API_URL}/api/notifications/${notif._id}`);
         }
         fetchData();
       } catch (error) {
