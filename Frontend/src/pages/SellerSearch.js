@@ -14,6 +14,9 @@ import {
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const SellerSearch = () => {
   const { user } = useContext(AuthContext);
   const [medicines, setMedicines] = useState([]);
@@ -45,7 +48,7 @@ const SellerSearch = () => {
   const fetchMedicines = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/medicines');
+      const response = await axios.get(`${API_URL}/api/medicines`);
       const availableMedicines = response.data.filter(med => med.quantity > 0);
       setMedicines(availableMedicines);
     } catch (error) {
@@ -104,17 +107,17 @@ const SellerSearch = () => {
         totalAmount,
         seller: user?.username || 'البائع',
         date: new Date().toISOString(),
-        pharmacyName: 'صيدلية النور'
+        pharmacyName: 'صيدلية اسلام'
       };
 
-      const response = await axios.post('http://localhost:5000/api/sales', invoiceData);
+      const response = await axios.post(`${API_URL}/api/sales`, invoiceData);
 
       // ✅ تصحيح: تحديث المخزون بشكل صحيح - طرح الكمية المباعة فقط
       for (const item of cart) {
         const medicine = medicines.find(m => m._id === item._id);
         if (medicine) {
           const newQuantity = medicine.quantity - item.quantity;
-          await axios.put(`http://localhost:5000/api/medicines/${item._id}`, {
+          await axios.put(`${API_URL}/api/medicines/${item._id}`, {
             quantity: newQuantity
           });
         }
@@ -155,7 +158,7 @@ const SellerSearch = () => {
   const PharmacyInvoice = ({ invoice }) => (
     <Box sx={{ p: 3, border: '2px solid #2e7d32', borderRadius: 2, bgcolor: 'white' }}>
       <Typography variant="h4" align="center" fontWeight="bold" color="#2e7d32" gutterBottom>
-        🏪 صيدلية النور
+        🏪 صيدلية اسلام  
       </Typography>
       
       <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -176,7 +179,7 @@ const SellerSearch = () => {
             <TableCell align="center"><strong>الكمية</strong></TableCell>
             <TableCell align="center"><strong>السعر</strong></TableCell>
             <TableCell align="center"><strong>المجموع</strong></TableCell>
-          </TableRow>
+          </TableHead>
         </TableHead>
         <TableBody>
           {invoice.items.map((item, index) => (
@@ -195,7 +198,7 @@ const SellerSearch = () => {
           الإجمالي: {invoice.totalAmount} ₪
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          شكراً لشرائكم من صيدلية النور
+          شكراً لشرائكم من صيدلية اسلام
         </Typography>
       </Box>
     </Box>
