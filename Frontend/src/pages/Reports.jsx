@@ -56,6 +56,9 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
+// تعريف API_URL في أعلى الملف
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 const Reports = () => {
@@ -80,11 +83,11 @@ const Reports = () => {
     setLoading(true);
     try {
       const [salesRes, medicinesRes, usersRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/sales'),
-        axios.get('http://localhost:5000/api/medicines'),
-        axios.get('http://localhost:5000/api/users'),
-        axios.get('http://localhost:5000/api/returns'),
-        axios.get('http://localhost:5000/api/damaged')
+        axios.get(`${API_URL}/api/sales`),
+        axios.get(`${API_URL}/api/medicines`),
+        axios.get(`${API_URL}/api/users`),
+        axios.get(`${API_URL}/api/returns`),
+        axios.get(`${API_URL}/api/damaged`)
       ]);
 
       const salesData = salesRes.data;
