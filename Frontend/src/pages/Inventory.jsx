@@ -35,6 +35,9 @@ const Inventory = () => {
   const [reportDialog, setReportDialog] = useState(false);
   const [currentReport, setCurrentReport] = useState(null);
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -47,10 +50,10 @@ const Inventory = () => {
     try {
       setLoading(true);
       const [medicinesRes, salesRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/medicines'),
-        axios.get('http://localhost:5000/api/sales'),
-        axios.get('http://localhost:5000/api/returns'),
-        axios.get('http://localhost:5000/api/damaged')
+        axios.get(`${API_URL}/api/medicines`),
+        axios.get(`${API_URL}/api/sales`),
+        axios.get(`${API_URL}/api/returns`),
+        axios.get(`${API_URL}/api/damaged`)
       ]);
       
       setMedicines(medicinesRes.data);
