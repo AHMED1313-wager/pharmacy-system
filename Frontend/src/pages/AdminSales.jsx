@@ -35,9 +35,12 @@ const AdminSales = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [stats, setStats] = useState({});
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const fetchSales = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/sales`);
+      const { data } = await axios.get(`${API_URL}/api/sales`);
       setSales(data);
       calculateStats(data);
     } catch (error) {
