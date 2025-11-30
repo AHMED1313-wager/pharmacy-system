@@ -50,10 +50,13 @@ const AdminMedicines = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  // تعريف API_URL في أعلى الملف
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const fetchMedicines = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/medicines');
+      const response = await axios.get(`${API_URL}/api/medicines`);
       setMedicines(response.data);
       setFilteredMedicines(response.data);
     } catch (error) {
@@ -139,10 +142,10 @@ const AdminMedicines = () => {
       setMessage({ type: '', text: '' });
       
       if (editId) {
-        await axios.put(`http://localhost:5000/api/medicines/${editId}`, payload);
+        await axios.put(`${API_URL}/api/medicines/${editId}`, payload);
         setMessage({ type: 'success', text: 'تم تحديث الدواء والمخزون بنجاح' });
       } else {
-        await axios.post('http://localhost:5000/api/medicines', payload);
+        await axios.post(`${API_URL}/api/medicines`, payload);
         setMessage({ type: 'success', text: 'تم إضافة الدواء إلى المخزون بنجاح' });
       }
       
@@ -169,7 +172,7 @@ const AdminMedicines = () => {
     if (window.confirm(`هل تريد حذف الدواء "${medicineName}"؟ سيتم حذفه أيضاً من المخزون.`)) {
       try {
         setLoading(true);
-        await axios.delete(`http://localhost:5000/api/medicines/${id}`);
+        await axios.delete(`${API_URL}/api/medicines/${id}`);
         await fetchMedicines();
         setMessage({ type: 'success', text: 'تم حذف الدواء من المخزون بنجاح' });
       } catch (error) {
