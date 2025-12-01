@@ -179,7 +179,7 @@ const SellerSearch = () => {
             <TableCell align="center"><strong>الكمية</strong></TableCell>
             <TableCell align="center"><strong>السعر</strong></TableCell>
             <TableCell align="center"><strong>المجموع</strong></TableCell>
-          </TableHead>
+          </TableRow>
         </TableHead>
         <TableBody>
           {invoice.items.map((item, index) => (
@@ -320,7 +320,7 @@ const SellerSearch = () => {
                   })}
                 </Grid>
               ) : searchTerm ? (
-                <Paper sx={{ p: 4, textAlign: 'center' }}>
+                <Paper sx={{ p: 4, textAlign='center' }}>
                   <SearchIcon sx={{ fontSize: 48, color: 'grey.400', mb: 2 }} />
                   <Typography variant="h6" color="text.secondary">
                     لا توجد نتائج لـ "{searchTerm}"
@@ -330,7 +330,7 @@ const SellerSearch = () => {
                   </Typography>
                 </Paper>
               ) : (
-                <Paper sx={{ p: 4, textAlign: 'center' }}>
+                <Paper sx={{ p: 4, textAlign='center' }}>
                   <SearchIcon sx={{ fontSize: 48, color: 'grey.400', mb: 2 }} />
                   <Typography variant="h6" color="text.secondary">
                     ابحث عن الأدوية المتاحة
