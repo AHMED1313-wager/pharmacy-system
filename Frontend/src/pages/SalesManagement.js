@@ -270,7 +270,7 @@ const SalesManagement = () => {
                   </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                  <Paper sx={{ p: 2, textAlign="center", bgcolor: '#e8f5e8' }}>
+                  <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#e8f5e8' }}>
                     <Typography variant="h4" color="success" fontWeight="bold">
                       {stats.monthly?.count || 0}
                     </Typography>
@@ -278,7 +278,7 @@ const SalesManagement = () => {
                   </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                  <Paper sx={{ p: 2, textAlign="center", bgcolor: '#fff3e0' }}>
+                  <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#fff3e0' }}>
                     <Typography variant="h4" color="warning" fontWeight="bold">
                       {stats.total?.count || 0}
                     </Typography>
