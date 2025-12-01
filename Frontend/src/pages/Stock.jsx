@@ -55,7 +55,7 @@ const Stock = () => {
     try {
       setLoading(true);
       const [medicinesRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get(`${API_URL}/api/medicines`), // ✅ تم التصحيح: استخدام /api/medicines بدلاً من /api/stock
+        axios.get(`${API_URL}/api/medicines`), // ✅ تم التصحيح: استخدام API_URL بدلاً من localhost:5000
         axios.get(`${API_URL}/api/returns`),
         axios.get(`${API_URL}/api/damaged`)
       ]);
