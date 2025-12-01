@@ -54,20 +54,62 @@ const Stock = () => {
   const fetchStockItems = async () => {
     try {
       setLoading(true);
-      const [medicinesRes, returnsRes, damagedRes] = await Promise.all([
-        axios.get(`${API_URL}/api/medicines`), // ✅ تم التصحيح: استخدام API_URL بدلاً من localhost:5000
-        axios.get(`${API_URL}/api/returns`),
-        axios.get(`${API_URL}/api/damaged`)
-      ]);
-
-      setStockItems(medicinesRes.data);
-      setFilteredItems(medicinesRes.data);
-      setReturns(returnsRes.data);
-      setDamaged(damagedRes.data);
-      checkAlerts(medicinesRes.data);
+      
+      // إعادة تعيين الرسائل
+      setMessage({ type: '', text: '' });
+      
+      // 1. جلب الأدوية (الأساسي - هذا يعمل دائماً)
+      const medicinesRes = await axios.get(`${API_URL}/api/medicines`);
+      const medicinesData = medicinesRes.data;
+      
+      // 2. محاولة جلب المرتجعات (إذا فشل نستخدم مصفوفة فارغة)
+      let returnsData = [];
+      try {
+        const returnsRes = await axios.get(`${API_URL}/api/returns`);
+        returnsData = returnsRes.data || [];
+        console.log('✅ [Stock] تم جلب بيانات المرتجعات:', returnsData.length);
+      } catch (returnsError) {
+        console.log('⚠️ [Stock] /api/returns غير متاح - استخدام بيانات فارغة');
+      }
+      
+      // 3. محاولة جلب التالف (إذا فشل نستخدم مصفوفة فارغة)
+      let damagedData = [];
+      try {
+        const damagedRes = await axios.get(`${API_URL}/api/damaged`);
+        damagedData = damagedRes.data || [];
+        console.log('✅ [Stock] تم جلب بيانات التالف:', damagedData.length);
+      } catch (damagedError) {
+        console.log('⚠️ [Stock] /api/damaged غير متاح - استخدام بيانات فارغة');
+      }
+      
+      // 4. تحديث الحالة
+      setStockItems(medicinesData);
+      setFilteredItems(medicinesData);
+      setReturns(returnsData);
+      setDamaged(damagedData);
+      
+      // 5. فحص التنبيهات
+      checkAlerts(medicinesData);
+      
+      // 6. رسالة نجاح
+      if (medicinesData.length > 0) {
+        setMessage({ 
+          type: 'success', 
+          text: `تم تحميل ${medicinesData.length} صنف دوائي بنجاح` 
+        });
+      } else {
+        setMessage({ 
+          type: 'info', 
+          text: 'لا توجد أدوية في المخزون حالياً' 
+        });
+      }
+      
     } catch (error) {
-      console.error('خطأ في جلب بيانات المخزون:', error);
-      setMessage({ type: 'error', text: 'خطأ في جلب بيانات المخزون' });
+      console.error('❌ [Stock] خطأ في جلب بيانات المخزون:', error.message);
+      setMessage({ 
+        type: 'error', 
+        text: 'خطأ في الاتصال بالخادم. تأكد من اتصال الإنترنت.' 
+      });
     } finally {
       setLoading(false);
     }
