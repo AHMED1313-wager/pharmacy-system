@@ -107,7 +107,7 @@ const SellerCategories = () => {
         totalAmount,
         seller: user?.username || 'البائع',
         date: new Date().toISOString(),
-        pharmacyName: 'صيدلية النور'
+        pharmacyName: 'صيدلية إسلام'
       };
 
       const response = await axios.post(`${API_URL}/api/sales`, invoiceData);
@@ -152,7 +152,7 @@ const SellerCategories = () => {
   const PharmacyInvoice = ({ invoice }) => (
     <Box sx={{ p: 3, border: '2px solid #2e7d32', borderRadius: 2, bgcolor: 'white' }}>
       <Typography variant="h4" align="center" fontWeight="bold" color="#2e7d32" gutterBottom>
-        🏪 صيدلية النور
+        🏪 صيدلية إسلام
       </Typography>
       
       <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -192,7 +192,7 @@ const SellerCategories = () => {
           الإجمالي: {invoice.totalAmount} ₪
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          شكراً لشرائكم من صيدلية النور
+          شكراً لشرائكم من صيدلية إسلام
         </Typography>
       </Box>
     </Box>
